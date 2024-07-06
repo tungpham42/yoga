@@ -13,6 +13,21 @@ const PoseList = ({ catID = "0" }) => {
   const { catID: paramCatID } = useParams();
   const activeCatID = paramCatID || catID;
 
+  const setEqualHeight = (selector, offset = 0) => {
+    const elements = document.querySelectorAll(selector);
+    let maxHeight = 0;
+
+    elements.forEach((element) => {
+      element.style.height = ""; // Reset height to recalculate properly
+      const elementHeight = element.getBoundingClientRect().height;
+      maxHeight = Math.max(maxHeight, elementHeight);
+    });
+
+    elements.forEach((element) => {
+      element.style.height = `${maxHeight + offset}px`;
+    });
+  };
+
   useEffect(() => {
     const fetchPoses = async () => {
       setLoading(true);
@@ -81,20 +96,5 @@ const PoseList = ({ catID = "0" }) => {
     </>
   );
 };
-
-function setEqualHeight(selector, offset = 0) {
-  const elements = document.querySelectorAll(selector);
-  let maxHeight = 0;
-
-  elements.forEach((element) => {
-    element.style.height = ""; // Reset height to recalculate properly
-    const elementHeight = element.getBoundingClientRect().height;
-    maxHeight = Math.max(maxHeight, elementHeight);
-  });
-
-  elements.forEach((element) => {
-    element.style.height = maxHeight + offset + "px";
-  });
-}
 
 export default PoseList;
